@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import '../app_theme.dart';
+import '../models/drag_data.dart';
 import '../models/piece.dart';
 import '../models/puzzle.dart';
-import '../models/drag_data.dart';
 import 'board_grid.dart';
 import 'clue_strip.dart';
 import 'tray.dart';
@@ -69,41 +72,94 @@ class _GameScreenState extends State<GameScreen> {
     );
   }
 
+  Widget _buildHeader() {
+    return Container(
+      height: 64,
+      decoration: const BoxDecoration(
+        color: AppColors.background,
+        border: Border(
+          bottom: BorderSide(color: AppColors.ink, width: 2),
+        ),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      child: Row(
+        children: [
+          IconButton(
+            icon: const Icon(Icons.lightbulb_outline, color: AppColors.primary),
+            tooltip: 'Hint',
+            onPressed: null,
+          ),
+          Expanded(
+            child: Text(
+              'MODULOR',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.archivoNarrow(
+                fontSize: 24,
+                fontWeight: FontWeight.w700,
+                color: AppColors.primary,
+                letterSpacing: -0.5,
+              ),
+            ),
+          ),
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.settings_outlined, color: AppColors.primary),
+            tooltip: 'Menu',
+            onSelected: (value) {
+              if (value == 'restart') _reset();
+            },
+            itemBuilder: (context) => [
+              const PopupMenuItem(
+                value: 'restart',
+                child: Text('Restart'),
+              ),
+              const PopupMenuItem(
+                value: 'menu',
+                enabled: false,
+                child: Text('Back to Menu'),
+              ),
+              const PopupMenuItem(
+                value: 'settings',
+                enabled: false,
+                child: Text('Settings'),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isBoardFull = board.every((p) => p != null);
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.refresh),
-                    onPressed: _reset,
-                    tooltip: 'Reset',
-                  ),
-                ],
-              ),
-            ),
+            _buildHeader(),
             ClueStrip(clues: widget.puzzle.clues),
             Expanded(
-              child: Center(
-                child: BoardGrid(
-                  board: board,
-                  onDrop: _onDropToBoard,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 24, vertical: 16),
+                child: Center(
+                  child: BoardGrid(
+                    board: board,
+                    onDrop: _onDropToBoard,
+                  ),
                 ),
               ),
             ),
-            Tray(
-              tray: tray,
-              isBoardFull: isBoardFull,
-              onDropToTray: _onDropToTray,
-              onCheck: _checkSolution,
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 24, vertical: 12),
+              child: Tray(
+                tray: tray,
+                isBoardFull: isBoardFull,
+                onDropToTray: _onDropToTray,
+                onCheck: _checkSolution,
+              ),
             ),
           ],
         ),
