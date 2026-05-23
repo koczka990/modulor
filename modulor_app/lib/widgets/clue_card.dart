@@ -42,7 +42,8 @@ class ClueCard extends StatelessWidget {
         AppColors.clueHeaderFg[index % AppColors.clueHeaderFg.length];
     final label = 'CLUE ${String.fromCharCode(65 + index)}';
 
-    return Container(
+    return IntrinsicWidth(
+      child: Container(
       margin: const EdgeInsets.only(right: 8),
       decoration: BoxDecoration(
         border: Border.all(color: AppColors.ink, width: 2),
@@ -92,6 +93,7 @@ class ClueCard extends StatelessWidget {
           ),
         ],
       ),
+    ),
     );
   }
 

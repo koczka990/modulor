@@ -11,9 +11,11 @@ class ClueStrip extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Row(
-        children: clues.map((c) => ClueCard(clue: c)).toList(),
+        children: clues.indexed
+            .map((e) => ClueCard(clue: e.$2, index: e.$1))
+            .toList(),
       ),
     );
   }
