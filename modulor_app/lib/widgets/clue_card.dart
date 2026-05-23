@@ -1,44 +1,96 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import '../app_theme.dart';
 import '../models/clue.dart';
 import '../models/piece.dart';
 import 'piece_widget.dart';
 
 class ClueCard extends StatelessWidget {
   final Clue clue;
+  final int index;
   final double cellSize;
 
-  const ClueCard({super.key, required this.clue, this.cellSize = 28});
+  const ClueCard({
+    super.key,
+    required this.clue,
+    required this.index,
+    this.cellSize = 32,
+  });
 
   @override
   Widget build(BuildContext context) {
+    if (clue.reveals.isEmpty) return const SizedBox.shrink();
+
+    final minRow = clue.reveals.map((r) => r.row).reduce(min);
+    final maxRow = clue.reveals.map((r) => r.row).reduce(max);
+    final minCol = clue.reveals.map((r) => r.col).reduce(min);
+    final maxCol = clue.reveals.map((r) => r.col).reduce(max);
+    final rows = maxRow - minRow + 1;
+    final cols = maxCol - minCol + 1;
+
     final revealMap = {
-      for (final r in clue.reveals) r.row * 3 + r.col: r,
+      for (final r in clue.reveals)
+        (r.row - minRow) * cols + (r.col - minCol): r,
     };
 
+    final headerBg =
+        AppColors.clueHeaderBg[index % AppColors.clueHeaderBg.length];
+    final headerFg =
+        AppColors.clueHeaderFg[index % AppColors.clueHeaderFg.length];
+    final label = 'CLUE ${String.fromCharCode(65 + index)}';
+
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 4),
+      margin: const EdgeInsets.only(right: 8),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.black87, width: 1.5),
+        border: Border.all(color: AppColors.ink, width: 2),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: List.generate(3, (row) {
-          return Row(
-            mainAxisSize: MainAxisSize.min,
-            children: List.generate(3, (col) {
-              final reveal = revealMap[row * 3 + col];
-              return Container(
-                width: cellSize,
-                height: cellSize,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black26, width: 0.5),
-                  color: Colors.grey.shade100,
-                ),
-                child: reveal == null ? null : _buildReveal(reveal),
-              );
-            }),
-          );
-        }),
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            color: headerBg,
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+            child: Text(
+              label,
+              style: GoogleFonts.jetBrainsMono(
+                fontSize: 11,
+                fontWeight: FontWeight.w500,
+                color: headerFg,
+              ),
+            ),
+          ),
+          Container(
+            decoration: const BoxDecoration(
+              border: Border(
+                top: BorderSide(color: AppColors.ink, width: 2),
+              ),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: List.generate(rows, (row) {
+                return Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: List.generate(cols, (col) {
+                    final reveal = revealMap[row * cols + col];
+                    return Container(
+                      width: cellSize,
+                      height: cellSize,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: AppColors.ink, width: 1),
+                        color: AppColors.background,
+                      ),
+                      child: reveal == null ? null : _buildReveal(reveal),
+                    );
+                  }),
+                );
+              }),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -51,54 +103,62 @@ class ClueCard extends StatelessWidget {
       );
     }
     if (reveal.color != null) {
-      return _ColorOnlyWidget(color: reveal.color!, size: cellSize);
+      return _ColorSwatch(color: reveal.color!, size: cellSize);
     }
-    // Shape only: reuse PieceWidget with grey tint via ColorFiltered
-    return ColorFiltered(
-      colorFilter: const ColorFilter.mode(Colors.grey, BlendMode.saturation),
-      child: PieceWidget(
-        piece: Piece(color: PieceColor.red, shape: reveal.shape!),
-        size: cellSize,
-      ),
-    );
+    if (reveal.shape != null) {
+      return ColorFiltered(
+        colorFilter: const ColorFilter.mode(Colors.grey, BlendMode.saturation),
+        child: PieceWidget(
+          piece: Piece(color: PieceColor.red, shape: reveal.shape!),
+          size: cellSize,
+        ),
+      );
+    }
+    return const SizedBox.shrink();
   }
 }
 
-class _ColorOnlyWidget extends StatelessWidget {
+class _ColorSwatch extends StatelessWidget {
   final PieceColor color;
   final double size;
 
-  const _ColorOnlyWidget({required this.color, required this.size});
+  const _ColorSwatch({required this.color, required this.size});
 
   static const _colors = {
-    PieceColor.red:   Color(0xFFCC0000),
-    PieceColor.blue:  Color(0xFF0055BB),
-    PieceColor.green: Color(0xFF007700),
+    PieceColor.red:   AppColors.pieceRed,
+    PieceColor.blue:  AppColors.pieceBlue,
+    PieceColor.green: AppColors.pieceYellow,
   };
 
   @override
   Widget build(BuildContext context) {
-    final pad = size * 0.1;
+    final pad = size * 0.15;
     return CustomPaint(
       size: Size(size, size),
-      painter: _RectPainter(_colors[color]!, pad),
+      painter: _SwatchPainter(_colors[color]!, pad),
     );
   }
 }
 
-class _RectPainter extends CustomPainter {
+class _SwatchPainter extends CustomPainter {
   final Color color;
   final double pad;
-  _RectPainter(this.color, this.pad);
+  _SwatchPainter(this.color, this.pad);
 
   @override
   void paint(Canvas canvas, Size size) {
+    final rect =
+        Rect.fromLTWH(pad, pad, size.width - 2 * pad, size.height - 2 * pad);
+    canvas.drawRect(rect, Paint()..color = color..style = PaintingStyle.fill);
     canvas.drawRect(
-      Rect.fromLTWH(pad, pad, size.width - 2 * pad, size.height - 2 * pad),
-      Paint()..color = color,
+      rect,
+      Paint()
+        ..color = AppColors.ink
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1.5,
     );
   }
 
   @override
-  bool shouldRepaint(_RectPainter old) => old.color != color;
+  bool shouldRepaint(_SwatchPainter old) => old.color != color;
 }
