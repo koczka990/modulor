@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../app_theme.dart';
 import '../models/piece.dart';
 
 class PieceWidget extends StatelessWidget {
@@ -20,37 +21,40 @@ class _PiecePainter extends CustomPainter {
   final Piece piece;
   _PiecePainter(this.piece);
 
-  static const _colors = {
-    PieceColor.red:   Color(0xFFCC0000),
-    PieceColor.blue:  Color(0xFF0055BB),
-    PieceColor.green: Color(0xFF007700),
+  static const _fillColors = {
+    PieceColor.red:   AppColors.pieceRed,
+    PieceColor.blue:  AppColors.pieceBlue,
+    PieceColor.green: AppColors.pieceYellow,
   };
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = _colors[piece.color]!
+    final fill = Paint()
+      ..color = _fillColors[piece.color]!
       ..style = PaintingStyle.fill;
+    final stroke = Paint()
+      ..color = AppColors.ink
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.0;
 
     final pad = size.width * 0.1;
-    final rect = Rect.fromLTWH(
-      pad, pad, size.width - 2 * pad, size.height - 2 * pad,
-    );
+    final rect = Rect.fromLTWH(pad, pad, size.width - 2 * pad, size.height - 2 * pad);
 
     switch (piece.shape) {
       case PieceShape.circle:
-        canvas.drawOval(rect, paint);
+        canvas.drawOval(rect, fill);
+        canvas.drawOval(rect, stroke);
       case PieceShape.square:
-        canvas.drawRect(rect, paint);
+        canvas.drawRect(rect, fill);
+        canvas.drawRect(rect, stroke);
       case PieceShape.triangle:
-        canvas.drawPath(
-          Path()
-            ..moveTo(rect.center.dx, rect.top)
-            ..lineTo(rect.right, rect.bottom)
-            ..lineTo(rect.left, rect.bottom)
-            ..close(),
-          paint,
-        );
+        final path = Path()
+          ..moveTo(rect.center.dx, rect.top)
+          ..lineTo(rect.right, rect.bottom)
+          ..lineTo(rect.left, rect.bottom)
+          ..close();
+        canvas.drawPath(path, fill);
+        canvas.drawPath(path, stroke);
     }
   }
 
