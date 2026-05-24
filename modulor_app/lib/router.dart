@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
 import 'screens/welcome_screen.dart';
@@ -24,10 +25,15 @@ final appRouter = GoRouter(
     ),
     GoRoute(
       path: '/sets/:setId/levels/:levelIndex/play',
-      builder: (context, state) => GameScreen(
-        setId: state.pathParameters['setId']!,
-        levelIndex: int.parse(state.pathParameters['levelIndex']!),
-      ),
+      builder: (context, state) {
+        final setId = state.pathParameters['setId']!;
+        final levelIndex = int.parse(state.pathParameters['levelIndex']!);
+        return GameScreen(
+          key: ValueKey('$setId-$levelIndex'),
+          setId: setId,
+          levelIndex: levelIndex,
+        );
+      },
     ),
   ],
 );

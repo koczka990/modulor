@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../app_theme.dart';
@@ -146,11 +147,11 @@ class _GameScreenState extends State<GameScreen> {
             tooltip: 'Menu',
             onSelected: (value) {
               if (value == 'restart') _reset();
+              if (value == 'menu') context.go('/sets');
             },
             itemBuilder: (context) => [
               const PopupMenuItem(value: 'restart', child: Text('Restart')),
-              const PopupMenuItem(
-                  value: 'menu', enabled: false, child: Text('Back to Menu')),
+              const PopupMenuItem(value: 'menu', child: Text('Back to Menu')),
               const PopupMenuItem(
                   value: 'settings', enabled: false, child: Text('Settings')),
             ],

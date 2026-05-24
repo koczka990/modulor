@@ -9,7 +9,6 @@ class Tray extends StatelessWidget {
   final bool isBoardFull;
   final void Function(DragData data) onDropToTray;
   final VoidCallback onCheck;
-  final double pieceSize;
 
   const Tray({
     super.key,
@@ -17,8 +16,12 @@ class Tray extends StatelessWidget {
     required this.isBoardFull,
     required this.onDropToTray,
     required this.onCheck,
-    this.pieceSize = 56,
   });
+
+  static const _spacing = 8.0;
+  static const _padding = 12.0;
+  static const _borderWidth = 4.0;
+  static const _itemsPerRow = 5;
 
   @override
   Widget build(BuildContext context) {
@@ -31,35 +34,26 @@ class Tray extends StatelessWidget {
             return Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                border: Border.all(color: AppColors.ink, width: 4),
+                border: Border.all(color: AppColors.ink, width: _borderWidth),
                 color: candidateData.isNotEmpty
                     ? AppColors.secondaryContainer.withOpacity(0.2)
                     : AppColors.surfaceContainer,
               ),
-              padding: const EdgeInsets.all(12),
-              child: Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: [
-                  for (int i = 0; i < tray.length; i++)
-                    if (tray[i] != null)
-                      Draggable<DragData>(
-                        data: DragData(
-                          piece: tray[i]!,
-                          fromTray: true,
-                          sourceIndex: i,
-                        ),
-                        feedback: Material(
-                          color: Colors.transparent,
-                          child: _PieceBox(piece: tray[i]!, size: pieceSize),
-                        ),
-                        childWhenDragging: SizedBox(
-                          width: pieceSize,
-                          height: pieceSize,
-                        ),
-                        child: _PieceBox(piece: tray[i]!, size: pieceSize),
-                      ),
-                ],
+              padding: const EdgeInsets.all(_padding),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final pieceSize = (constraints.maxWidth -
+                          _spacing * (_itemsPerRow - 1)) /
+                      _itemsPerRow;
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      _TrayRow(tray: tray, start: 0, count: 5, pieceSize: pieceSize),
+                      const SizedBox(height: _spacing),
+                      _TrayRow(tray: tray, start: 5, count: 4, pieceSize: pieceSize),
+                    ],
+                  );
+                },
               ),
             );
           },
@@ -81,6 +75,50 @@ class Tray extends StatelessWidget {
             ),
           ),
       ],
+    );
+  }
+}
+
+class _TrayRow extends StatelessWidget {
+  final List<Piece?> tray;
+  final int start;
+  final int count;
+  final double pieceSize;
+
+  const _TrayRow({
+    required this.tray,
+    required this.start,
+    required this.count,
+    required this.pieceSize,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(count, (i) {
+        final index = start + i;
+        final piece = tray[index];
+        final isLast = i == count - 1;
+        Widget slot;
+        if (piece == null) {
+          slot = SizedBox(width: pieceSize, height: pieceSize);
+        } else {
+          slot = Draggable<DragData>(
+            data: DragData(piece: piece, fromTray: true, sourceIndex: index),
+            feedback: Material(
+              color: Colors.transparent,
+              child: _PieceBox(piece: piece, size: pieceSize),
+            ),
+            childWhenDragging: SizedBox(width: pieceSize, height: pieceSize),
+            child: _PieceBox(piece: piece, size: pieceSize),
+          );
+        }
+        return Padding(
+          padding: EdgeInsets.only(right: isLast ? 0 : 8),
+          child: slot,
+        );
+      }),
     );
   }
 }
