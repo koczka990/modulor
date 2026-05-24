@@ -22,9 +22,9 @@ class _PiecePainter extends CustomPainter {
   _PiecePainter(this.piece);
 
   static const _fillColors = {
-    PieceColor.red:   AppColors.pieceRed,
-    PieceColor.blue:  AppColors.pieceBlue,
-    PieceColor.green: AppColors.pieceYellow,
+    PieceColor.red:    AppColors.pieceRed,
+    PieceColor.blue:   AppColors.pieceBlue,
+    PieceColor.yellow: AppColors.pieceYellow,
   };
 
   @override
