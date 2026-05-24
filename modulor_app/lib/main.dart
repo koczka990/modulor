@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'app_theme.dart';
+import 'data/app_services.dart';
 import 'models/puzzle.dart';
 import 'widgets/game_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await AppServices.instance.init();
   runApp(const ModulorApp());
 }
 
