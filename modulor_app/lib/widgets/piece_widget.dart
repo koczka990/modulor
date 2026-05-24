@@ -5,21 +5,29 @@ import '../models/piece.dart';
 class PieceWidget extends StatelessWidget {
   final Piece piece;
   final double size;
+  final bool outlineOnly;
 
-  const PieceWidget({super.key, required this.piece, required this.size});
+  const PieceWidget({
+    super.key,
+    required this.piece,
+    required this.size,
+    this.outlineOnly = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
       size: Size(size, size),
-      painter: _PiecePainter(piece),
+      painter: _PiecePainter(piece, outlineOnly: outlineOnly),
     );
   }
 }
 
 class _PiecePainter extends CustomPainter {
   final Piece piece;
-  _PiecePainter(this.piece);
+  final bool outlineOnly;
+
+  _PiecePainter(this.piece, {this.outlineOnly = false});
 
   static const _fillColors = {
     PieceColor.red:    AppColors.pieceRed,
@@ -42,10 +50,10 @@ class _PiecePainter extends CustomPainter {
 
     switch (piece.shape) {
       case PieceShape.circle:
-        canvas.drawOval(rect, fill);
+        if (!outlineOnly) canvas.drawOval(rect, fill);
         canvas.drawOval(rect, stroke);
       case PieceShape.square:
-        canvas.drawRect(rect, fill);
+        if (!outlineOnly) canvas.drawRect(rect, fill);
         canvas.drawRect(rect, stroke);
       case PieceShape.triangle:
         final path = Path()
@@ -53,11 +61,12 @@ class _PiecePainter extends CustomPainter {
           ..lineTo(rect.right, rect.bottom)
           ..lineTo(rect.left, rect.bottom)
           ..close();
-        canvas.drawPath(path, fill);
+        if (!outlineOnly) canvas.drawPath(path, fill);
         canvas.drawPath(path, stroke);
     }
   }
 
   @override
-  bool shouldRepaint(_PiecePainter old) => old.piece != piece;
+  bool shouldRepaint(_PiecePainter old) =>
+      old.piece != piece || old.outlineOnly != outlineOnly;
 }

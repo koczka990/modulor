@@ -97,6 +97,12 @@ class ClueCard extends StatelessWidget {
     );
   }
 
+  static const _pieceColors = {
+    PieceColor.red:    AppColors.pieceRed,
+    PieceColor.blue:   AppColors.pieceBlue,
+    PieceColor.yellow: AppColors.pieceYellow,
+  };
+
   Widget _buildReveal(CellReveal reveal) {
     if (reveal.color != null && reveal.shape != null) {
       return PieceWidget(
@@ -105,62 +111,16 @@ class ClueCard extends StatelessWidget {
       );
     }
     if (reveal.color != null) {
-      return _ColorSwatch(color: reveal.color!, size: cellSize);
+      return ColoredBox(color: _pieceColors[reveal.color!]!);
     }
     if (reveal.shape != null) {
-      return ColorFiltered(
-        colorFilter: const ColorFilter.mode(Colors.grey, BlendMode.saturation),
-        child: PieceWidget(
-          piece: Piece(color: PieceColor.red, shape: reveal.shape!),
-          size: cellSize,
-        ),
+      return PieceWidget(
+        piece: Piece(color: PieceColor.red, shape: reveal.shape!),
+        size: cellSize,
+        outlineOnly: true,
       );
     }
     return const SizedBox.shrink();
   }
 }
 
-class _ColorSwatch extends StatelessWidget {
-  final PieceColor color;
-  final double size;
-
-  const _ColorSwatch({required this.color, required this.size});
-
-  static const _colors = {
-    PieceColor.red:    AppColors.pieceRed,
-    PieceColor.blue:   AppColors.pieceBlue,
-    PieceColor.yellow: AppColors.pieceYellow,
-  };
-
-  @override
-  Widget build(BuildContext context) {
-    final pad = size * 0.15;
-    return CustomPaint(
-      size: Size(size, size),
-      painter: _SwatchPainter(_colors[color]!, pad),
-    );
-  }
-}
-
-class _SwatchPainter extends CustomPainter {
-  final Color color;
-  final double pad;
-  _SwatchPainter(this.color, this.pad);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final rect =
-        Rect.fromLTWH(pad, pad, size.width - 2 * pad, size.height - 2 * pad);
-    canvas.drawRect(rect, Paint()..color = color..style = PaintingStyle.fill);
-    canvas.drawRect(
-      rect,
-      Paint()
-        ..color = AppColors.ink
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 1.5,
-    );
-  }
-
-  @override
-  bool shouldRepaint(_SwatchPainter old) => old.color != color;
-}
