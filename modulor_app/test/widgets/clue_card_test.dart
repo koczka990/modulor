@@ -10,7 +10,7 @@ void main() {
       CellReveal(row: 0, col: 0, color: PieceColor.red, shape: PieceShape.circle),
       CellReveal(row: 0, col: 1, color: PieceColor.blue, shape: PieceShape.square),
       CellReveal(row: 1, col: 0),
-      CellReveal(row: 1, col: 1, color: PieceColor.green, shape: PieceShape.triangle),
+      CellReveal(row: 1, col: 1, color: PieceColor.yellow, shape: PieceShape.triangle),
     ]);
     await tester.pumpWidget(
       const MaterialApp(home: Scaffold(body: ClueCard(clue: clue, index: 0))),

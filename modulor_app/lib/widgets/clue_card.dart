@@ -127,9 +127,9 @@ class _ColorSwatch extends StatelessWidget {
   const _ColorSwatch({required this.color, required this.size});
 
   static const _colors = {
-    PieceColor.red:   AppColors.pieceRed,
-    PieceColor.blue:  AppColors.pieceBlue,
-    PieceColor.green: AppColors.pieceYellow,
+    PieceColor.red:    AppColors.pieceRed,
+    PieceColor.blue:   AppColors.pieceBlue,
+    PieceColor.yellow: AppColors.pieceYellow,
   };
 
   @override

@@ -10,9 +10,13 @@ import 'clue_strip.dart';
 import 'tray.dart';
 
 class GameScreen extends StatefulWidget {
-  final Puzzle puzzle;
+  final String setId;
+  final int levelIndex;
 
-  const GameScreen({super.key, required this.puzzle});
+  // Temporary: accepts legacy puzzle param for backwards compat during migration
+  final Puzzle? puzzle;
+
+  const GameScreen({super.key, this.setId = '', this.levelIndex = 0, this.puzzle});
 
   @override
   State<GameScreen> createState() => _GameScreenState();
@@ -22,17 +26,19 @@ class _GameScreenState extends State<GameScreen> {
   late List<Piece?> board;
   late List<Piece?> tray;
 
+  Puzzle get _puzzle => widget.puzzle ?? kHardcodedPuzzle;
+
   @override
   void initState() {
     super.initState();
     board = List<Piece?>.filled(9, null, growable: false);
-    tray = List<Piece?>.from(widget.puzzle.solution);
+    tray = List<Piece?>.from(_puzzle.solution);
   }
 
   void _reset() {
     setState(() {
       board = List<Piece?>.filled(9, null, growable: false);
-      tray = List<Piece?>.from(widget.puzzle.solution);
+      tray = List<Piece?>.from(_puzzle.solution);
     });
   }
 
@@ -59,7 +65,7 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void _checkSolution() {
-    final solution = widget.puzzle.solution;
+    final solution = _puzzle.solution;
     final correct =
         List.generate(9, (i) => board[i] == solution[i]).every((b) => b);
     ScaffoldMessenger.of(context).showSnackBar(
@@ -138,7 +144,7 @@ class _GameScreenState extends State<GameScreen> {
         child: Column(
           children: [
             _buildHeader(),
-            ClueStrip(clues: widget.puzzle.clues),
+            ClueStrip(clues: _puzzle.clues),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(

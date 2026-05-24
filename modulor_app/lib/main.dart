@@ -3,8 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'app_theme.dart';
 import 'data/app_services.dart';
-import 'models/puzzle.dart';
-import 'widgets/game_screen.dart';
+import 'router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,9 +16,10 @@ class ModulorApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Modulor',
       debugShowCheckedModeBanner: false,
+      routerConfig: appRouter,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: AppColors.primary,
@@ -29,7 +29,6 @@ class ModulorApp extends StatelessWidget {
         textTheme: GoogleFonts.archivoNarrowTextTheme(),
         useMaterial3: true,
       ),
-      home: const GameScreen(puzzle: kHardcodedPuzzle),
     );
   }
 }
