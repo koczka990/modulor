@@ -3,35 +3,34 @@
     {
       "id": "intermediate_001",
       "solution": [
-        {"color": "red",   "shape": "circle"},
-        {"color": "blue",  "shape": "square"},
-        {"color": "green", "shape": "triangle"},
-        {"color": "blue",  "shape": "circle"},
-        {"color": "green", "shape": "square"},
-        {"color": "red",   "shape": "triangle"},
-        {"color": "green", "shape": "circle"},
-        {"color": "red",   "shape": "square"},
-        {"color": "blue",  "shape": "triangle"}
+        {"color": "red",    "shape": "circle"},
+        {"color": "blue",   "shape": "square"},
+        {"color": "yellow", "shape": "triangle"},
+        {"color": "blue",   "shape": "circle"},
+        {"color": "yellow", "shape": "square"},
+        {"color": "red",    "shape": "triangle"},
+        {"color": "yellow", "shape": "circle"},
+        {"color": "red",    "shape": "square"},
+        {"color": "blue",   "shape": "triangle"}
       ],
       "clues": [
         {
           "cells": [
             {"r": 0, "c": 0, "color": "red"},
             {"r": 0, "c": 1, "shape": "square"},
-            {"r": 0, "c": 2, "color": "green"}
+            {"r": 0, "c": 2, "color": "yellow"}
           ]
         },
         {
           "cells": [
-            {"r": 0, "c": 0, "color": "blue",  "shape": "circle"},
-            {"r": 1, "c": 0},
+            {"r": 0, "c": 0, "color": "blue", "shape": "circle"},
             {"r": 1, "c": 1, "shape": "square"}
           ]
         },
         {
           "cells": [
             {"r": 0, "c": 0, "shape": "circle"},
-            {"r": 1, "c": 0, "color": "red",   "shape": "square"}
+            {"r": 1, "c": 0, "color": "red", "shape": "square"}
           ]
         }
       ]

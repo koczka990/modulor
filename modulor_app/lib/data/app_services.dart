@@ -1,3 +1,4 @@
+import 'package:drift/native.dart';
 import 'progress_database.dart';
 import 'progress_repository.dart';
 import 'puzzle_repository.dart';
@@ -12,6 +13,12 @@ class AppServices {
 
   Future<void> init() async {
     _db = AppDatabase();
+    progress = ProgressRepository(_db);
+    puzzles = PuzzleRepository();
+  }
+
+  Future<void> initForTesting() async {
+    _db = AppDatabase.forTesting(NativeDatabase.memory());
     progress = ProgressRepository(_db);
     puzzles = PuzzleRepository();
   }

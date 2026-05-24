@@ -2,43 +2,56 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../app_theme.dart';
+import '../data/app_services.dart';
 import '../models/drag_data.dart';
 import '../models/piece.dart';
 import '../models/puzzle.dart';
 import 'board_grid.dart';
 import 'clue_strip.dart';
+import 'completion_overlay.dart';
 import 'tray.dart';
 
 class GameScreen extends StatefulWidget {
   final String setId;
   final int levelIndex;
 
-  // Temporary: accepts legacy puzzle param for backwards compat during migration
-  final Puzzle? puzzle;
-
-  const GameScreen({super.key, this.setId = '', this.levelIndex = 0, this.puzzle});
+  const GameScreen({super.key, required this.setId, required this.levelIndex});
 
   @override
   State<GameScreen> createState() => _GameScreenState();
 }
 
 class _GameScreenState extends State<GameScreen> {
+  Puzzle? _puzzle;
   late List<Piece?> board;
   late List<Piece?> tray;
-
-  Puzzle get _puzzle => widget.puzzle ?? kHardcodedPuzzle;
+  bool _showOverlay = false;
+  bool _showNextButton = false;
 
   @override
   void initState() {
     super.initState();
     board = List<Piece?>.filled(9, null, growable: false);
-    tray = List<Piece?>.from(_puzzle.solution);
+    tray = [];
+    _loadPuzzle();
+  }
+
+  Future<void> _loadPuzzle() async {
+    final puzzles = await AppServices.instance.puzzles.loadSet(widget.setId);
+    final puzzle = puzzles[widget.levelIndex];
+    setState(() {
+      _puzzle = puzzle;
+      board = List<Piece?>.filled(9, null, growable: false);
+      tray = List<Piece?>.from(puzzle.solution);
+    });
   }
 
   void _reset() {
+    if (_puzzle == null) return;
     setState(() {
       board = List<Piece?>.filled(9, null, growable: false);
-      tray = List<Piece?>.from(_puzzle.solution);
+      tray = List<Piece?>.from(_puzzle!.solution);
+      _showOverlay = false;
     });
   }
 
@@ -64,18 +77,39 @@ class _GameScreenState extends State<GameScreen> {
     });
   }
 
-  void _checkSolution() {
-    final solution = _puzzle.solution;
+  Future<void> _checkSolution() async {
+    final puzzle = _puzzle;
+    if (puzzle == null) return;
+
     final correct =
-        List.generate(9, (i) => board[i] == solution[i]).every((b) => b);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(correct ? 'Correct!' : 'Not quite, keep trying.'),
-        backgroundColor:
-            correct ? Colors.green.shade700 : Colors.red.shade700,
-        duration: const Duration(seconds: 2),
-      ),
-    );
+        List.generate(9, (i) => board[i] == puzzle.solution[i]).every((b) => b);
+
+    if (!correct) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Not quite, keep trying.'),
+          backgroundColor: Colors.red.shade700,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
+
+    await AppServices.instance.progress
+        .markSolved(widget.setId, puzzle.id, widget.levelIndex);
+
+    final puzzles = await AppServices.instance.puzzles.loadSet(widget.setId);
+    final nextIndex = widget.levelIndex + 1;
+    final hasNext = nextIndex < puzzles.length;
+    final nextAlreadySolved = hasNext &&
+        await AppServices.instance.progress
+            .isSolved(widget.setId, puzzles[nextIndex].id);
+
+    if (!mounted) return;
+    setState(() {
+      _showOverlay = true;
+      _showNextButton = hasNext && !nextAlreadySolved;
+    });
   }
 
   Widget _buildHeader() {
@@ -114,20 +148,11 @@ class _GameScreenState extends State<GameScreen> {
               if (value == 'restart') _reset();
             },
             itemBuilder: (context) => [
+              const PopupMenuItem(value: 'restart', child: Text('Restart')),
               const PopupMenuItem(
-                value: 'restart',
-                child: Text('Restart'),
-              ),
+                  value: 'menu', enabled: false, child: Text('Back to Menu')),
               const PopupMenuItem(
-                value: 'menu',
-                enabled: false,
-                child: Text('Back to Menu'),
-              ),
-              const PopupMenuItem(
-                value: 'settings',
-                enabled: false,
-                child: Text('Settings'),
-              ),
+                  value: 'settings', enabled: false, child: Text('Settings')),
             ],
           ),
         ],
@@ -137,36 +162,55 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (_puzzle == null) {
+      return const Scaffold(
+        backgroundColor: AppColors.background,
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
     final isBoardFull = board.every((p) => p != null);
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
-        child: Column(
+        child: Stack(
           children: [
-            _buildHeader(),
-            ClueStrip(clues: _puzzle.clues),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 24, vertical: 16),
-                child: Center(
-                  child: BoardGrid(
-                    board: board,
-                    onDrop: _onDropToBoard,
+            Column(
+              children: [
+                _buildHeader(),
+                ClueStrip(clues: _puzzle!.clues),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 24, vertical: 16),
+                    child: Center(
+                      child: BoardGrid(
+                        board: board,
+                        onDrop: _onDropToBoard,
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 24, vertical: 12),
+                  child: Tray(
+                    tray: tray,
+                    isBoardFull: isBoardFull,
+                    onDropToTray: _onDropToTray,
+                    onCheck: () => _checkSolution(),
+                  ),
+                ),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 24, vertical: 12),
-              child: Tray(
-                tray: tray,
-                isBoardFull: isBoardFull,
-                onDropToTray: _onDropToTray,
-                onCheck: _checkSolution,
+            if (_showOverlay)
+              Positioned.fill(
+                child: CompletionOverlay(
+                  setId: widget.setId,
+                  levelIndex: widget.levelIndex,
+                  showNextButton: _showNextButton,
+                ),
               ),
-            ),
           ],
         ),
       ),
