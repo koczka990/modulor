@@ -1,0 +1,61 @@
+{
+  "puzzles": [
+    {
+      "id": "easy_001",
+      "solution": [
+        {"color": "red",   "shape": "circle"},
+        {"color": "red",  "shape": "triangle"},
+        {"color": "red", "shape": "square"},
+        {"color": "blue",  "shape": "circle"},
+        {"color": "blue", "shape": "triangle"},
+        {"color": "blue",   "shape": "square"},
+        {"color": "yellow", "shape": "circle"},
+        {"color": "yellow",   "shape": "triangle"},
+        {"color": "yellow",  "shape": "square"}
+      ],
+      "clues": [
+        {
+          "cells": [
+            {"r": 0, "c": 0},
+            {"r": 0, "c": 1},
+            {"r": 0, "c": 2},
+            {"r": 1, "c": 0, "color": "blue", "shape": "circle"},
+            {"r": 1, "c": 1},
+            {"r": 1, "c": 2},
+            {"r": 2, "c": 0},
+            {"r": 2, "c": 1},
+            {"r": 2, "c": 2}
+          ]
+        },
+        {
+          "cells": [
+            {"r": 0, "c": 0},
+            {"r": 0, "c": 1},
+            {"r": 0, "c": 2},
+            {"r": 1, "c": 0, "color": "blue", "shape": "circle"},
+            {"r": 1, "c": 1},
+            {"r": 1, "c": 2},
+            {"r": 2, "c": 0},
+            {"r": 2, "c": 1},
+            {"r": 2, "c": 2}
+          ]
+        },
+        {
+          "cells": [
+            {"r": 0, "c": 0},
+            {"r": 0, "c": 1},
+            {"r": 0, "c": 2},
+            {"r": 1, "c": 0, "color": "blue", "shape": "circle"},
+            {"r": 1, "c": 1},
+            {"r": 1, "c": 2},
+            {"r": 2, "c": 0},
+            {"r": 2, "c": 1},
+            {"r": 2, "c": 2}
+          ]
+        },
+
+        
+      ]
+    }
+  ]
+}
