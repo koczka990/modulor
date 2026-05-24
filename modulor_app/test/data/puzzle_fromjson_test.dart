@@ -69,8 +69,9 @@ void main() {
       expect(puzzle.solution.length, 9);
       expect(puzzle.solution[0].color, PieceColor.red);
       expect(puzzle.clues.length, 1);
-      expect(puzzle.clues[0].reveals.length, 1); // empty cell filtered out
+      expect(puzzle.clues[0].reveals.length, 2); // all cells kept for bounding box
       expect(puzzle.clues[0].reveals[0].color, PieceColor.red);
+      expect(puzzle.clues[0].reveals[1].color, isNull);
     });
   });
 }

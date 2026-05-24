@@ -34,7 +34,6 @@ class Clue {
   factory Clue.fromJson(Map<String, dynamic> json) {
     final cells = (json['cells'] as List)
         .map((c) => CellReveal.fromJson(c as Map<String, dynamic>))
-        .where((cr) => cr.color != null || cr.shape != null)
         .toList();
     return Clue(reveals: cells);
   }
