@@ -456,6 +456,260 @@
           ]
         }
       ]
+    },
+    {
+      "id": "easy_006",
+      "solution": [
+        {"color": "red",    "shape": "triangle"},
+        {"color": "red",    "shape": "circle"},
+        {"color": "yellow", "shape": "circle"},
+        {"color": "red",    "shape": "square"},
+        {"color": "blue",   "shape": "square"},
+        {"color": "blue",   "shape": "circle"},
+        {"color": "yellow", "shape": "square"},
+        {"color": "blue",   "shape": "triangle"},
+        {"color": "yellow", "shape": "triangle"}
+      ],
+      "clues": [
+        {
+          "cells": [
+            {"r": 0, "c": 0, "color": "red"},
+            {"r": 0, "c": 1, "color": "red"},
+            {"r": 0, "c": 2},
+            {"r": 1, "c": 0, "color": "red"},
+            {"r": 1, "c": 1},
+            {"r": 1, "c": 2},
+            {"r": 2, "c": 0},
+            {"r": 2, "c": 1},
+            {"r": 2, "c": 2}
+          ]
+        },
+        {
+          "cells": [
+            {"r": 0, "c": 0},
+            {"r": 0, "c": 1},
+            {"r": 0, "c": 2},
+            {"r": 1, "c": 0},
+            {"r": 1, "c": 1, "color": "blue"},
+            {"r": 1, "c": 2, "color": "blue"},
+            {"r": 2, "c": 0},
+            {"r": 2, "c": 1, "color": "blue"},
+            {"r": 2, "c": 2}
+          ]
+        },
+        {
+          "cells": [
+            {"r": 0, "c": 0},
+            {"r": 0, "c": 1, "shape": "circle"},
+            {"r": 0, "c": 2, "shape": "circle"},
+            {"r": 1, "c": 0},
+            {"r": 1, "c": 1},
+            {"r": 1, "c": 2, "shape": "circle"},
+            {"r": 2, "c": 0},
+            {"r": 2, "c": 1},
+            {"r": 2, "c": 2}
+          ]
+        },
+        {
+          "cells": [
+            {"r": 0, "c": 0},
+            {"r": 0, "c": 1},
+            {"r": 0, "c": 2},
+            {"r": 1, "c": 0, "shape": "square"},
+            {"r": 1, "c": 1, "shape": "square"},
+            {"r": 1, "c": 2},
+            {"r": 2, "c": 0, "shape": "square"},
+            {"r": 2, "c": 1},
+            {"r": 2, "c": 2}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "easy_007",
+      "solution": [
+        {"color": "blue",   "shape": "circle"},
+        {"color": "yellow", "shape": "circle"},
+        {"color": "red",    "shape": "triangle"},
+        {"color": "blue",   "shape": "triangle"},
+        {"color": "red",    "shape": "circle"},
+        {"color": "red",    "shape": "square"},
+        {"color": "yellow", "shape": "square"},
+        {"color": "blue",   "shape": "square"},
+        {"color": "yellow", "shape": "triangle"}
+      ],
+      "clues": [
+        {
+          "cells": [
+            {"r": 0, "c": 0, "shape": "circle"},
+            {"r": 0, "c": 1, "color": "yellow"},
+            {"r": 0, "c": 2, "shape": "triangle"},
+            {"r": 1, "c": 0},
+            {"r": 1, "c": 1},
+            {"r": 1, "c": 2},
+            {"r": 2, "c": 0},
+            {"r": 2, "c": 1},
+            {"r": 2, "c": 2}
+          ]
+        },
+        {
+          "cells": [
+            {"r": 0, "c": 0},
+            {"r": 0, "c": 1},
+            {"r": 0, "c": 2, "color": "red"},
+            {"r": 1, "c": 0},
+            {"r": 1, "c": 1},
+            {"r": 1, "c": 2, "shape": "square"},
+            {"r": 2, "c": 0},
+            {"r": 2, "c": 1},
+            {"r": 2, "c": 2, "color": "yellow"}
+          ]
+        },
+        {
+          "cells": [
+            {"r": 0, "c": 0, "color": "blue"},
+            {"r": 0, "c": 1},
+            {"r": 0, "c": 2},
+            {"r": 1, "c": 0, "shape": "triangle"},
+            {"r": 1, "c": 1},
+            {"r": 1, "c": 2},
+            {"r": 2, "c": 0, "color": "yellow"},
+            {"r": 2, "c": 1},
+            {"r": 2, "c": 2}
+          ]
+        },
+        {
+          "cells": [
+            {"r": 0, "c": 0},
+            {"r": 0, "c": 1},
+            {"r": 0, "c": 2},
+            {"r": 1, "c": 0},
+            {"r": 1, "c": 1},
+            {"r": 1, "c": 2},
+            {"r": 2, "c": 0, "shape": "square"},
+            {"r": 2, "c": 1, "color": "blue"},
+            {"r": 2, "c": 2, "shape": "triangle"}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "easy_008",
+      "solution": [
+        {"color": "red",    "shape": "circle"},
+        {"color": "red",    "shape": "triangle"},
+        {"color": "blue",   "shape": "square"},
+        {"color": "yellow", "shape": "circle"},
+        {"color": "yellow", "shape": "square"},
+        {"color": "blue",   "shape": "triangle"},
+        {"color": "yellow", "shape": "triangle"},
+        {"color": "red",    "shape": "square"},
+        {"color": "blue",   "shape": "circle"}
+      ],
+      "clues": [
+        {
+          "cells": [
+            {"r": 0, "c": 0, "color": "blue"},
+            {"r": 1, "c": 0, "color": "blue"},
+            {"r": 2, "c": 0, "color": "blue"}
+          ]
+        },
+        {
+          "cells": [
+            {"r": 0, "c": 0},
+            {"r": 1, "c": 0, "color": "yellow"},
+            {"r": 2, "c": 0, "color": "yellow"}
+          ]
+        },
+        {
+          "cells": [
+            {"r": 0, "c": 0},
+            {"r": 1, "c": 0},
+            {"r": 2, "c": 0, "color": "red"}
+          ]
+        },
+        {
+          "cells": [
+            {"r": 0, "c": 0, "shape": "circle"},
+            {"r": 0, "c": 1, "shape": "triangle"},
+            {"r": 0, "c": 2, "shape": "square"},
+            {"r": 1, "c": 0, "shape": "circle"},
+            {"r": 1, "c": 1, "shape": "square"},
+            {"r": 1, "c": 2, "shape": "triangle"},
+            {"r": 2, "c": 0, "shape": "triangle"},
+            {"r": 2, "c": 1, "shape": "square"},
+            {"r": 2, "c": 2, "shape": "circle"}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "easy_00x",
+      "solution": [
+        {"color": "blue",   "shape": "circle"},
+        {"color": "yellow", "shape": "circle"},
+        {"color": "red",    "shape": "triangle"},
+        {"color": "blue",   "shape": "triangle"},
+        {"color": "red",    "shape": "circle"},
+        {"color": "red",    "shape": "square"},
+        {"color": "yellow", "shape": "square"},
+        {"color": "blue",   "shape": "square"},
+        {"color": "yellow", "shape": "triangle"}
+      ],
+      "clues": [
+        {
+          "cells": [
+            {"r": 0, "c": 0},
+            {"r": 0, "c": 1},
+            {"r": 0, "c": 2},
+            {"r": 1, "c": 0},
+            {"r": 1, "c": 1},
+            {"r": 1, "c": 2},
+            {"r": 2, "c": 0},
+            {"r": 2, "c": 1},
+            {"r": 2, "c": 2}
+          ]
+        },
+        {
+          "cells": [
+            {"r": 0, "c": 0},
+            {"r": 0, "c": 1},
+            {"r": 0, "c": 2},
+            {"r": 1, "c": 0},
+            {"r": 1, "c": 1},
+            {"r": 1, "c": 2},
+            {"r": 2, "c": 0},
+            {"r": 2, "c": 1},
+            {"r": 2, "c": 2}
+          ]
+        },
+        {
+          "cells": [
+            {"r": 0, "c": 0},
+            {"r": 0, "c": 1},
+            {"r": 0, "c": 2},
+            {"r": 1, "c": 0},
+            {"r": 1, "c": 1},
+            {"r": 1, "c": 2},
+            {"r": 2, "c": 0},
+            {"r": 2, "c": 1},
+            {"r": 2, "c": 2}
+          ]
+        },
+        {
+          "cells": [
+            {"r": 0, "c": 0},
+            {"r": 0, "c": 1},
+            {"r": 0, "c": 2},
+            {"r": 1, "c": 0},
+            {"r": 1, "c": 1},
+            {"r": 1, "c": 2},
+            {"r": 2, "c": 0},
+            {"r": 2, "c": 1},
+            {"r": 2, "c": 2}
+          ]
+        }
+      ]
     }
   ]
 }

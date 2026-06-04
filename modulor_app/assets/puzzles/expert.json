@@ -1,6 +1,59 @@
 {
   "puzzles": [
     {
+      "id": "easy_001",
+      "solution": [
+        {"color": "blue",   "shape": "circle"},
+        {"color": "yellow", "shape": "triangle"},
+        {"color": "red",    "shape": "square"},
+        {"color": "blue",   "shape": "triangle"},
+        {"color": "red",    "shape": "circle"},
+        {"color": "yellow", "shape": "square"},
+        {"color": "yellow", "shape": "circle"},
+        {"color": "blue",   "shape": "square"},
+        {"color": "red",    "shape": "triangle"}
+      ],
+      "clues": [
+        {
+          "cells": [
+            {"r": 0, "c": 0, "shape": "circle"},
+            {"r": 0, "c": 1, "shape": "triangle"},
+            {"r": 0, "c": 2, "shape": "square"},
+            {"r": 1, "c": 0, "shape": "triangle"},
+            {"r": 1, "c": 1, "shape": "circle"},
+            {"r": 1, "c": 2, "shape": "square"},
+            {"r": 2, "c": 0, "shape": "circle"},
+            {"r": 2, "c": 1, "shape": "square"},
+            {"r": 2, "c": 2, "shape": "triangle"}
+          ]
+        },
+        {
+          "cells": [
+            {"r": 0, "c": 1, "color": "red"},
+            {"r": 1, "c": 0, "color": "red"}
+          ]
+        },
+        {
+          "cells": [
+            {"r": 0, "c": 0, "color": "red"},
+            {"r": 0, "c": 1, "color": "yellow"}
+          ]
+        },
+        {
+          "cells": [
+            {"r": 0, "c": 0, "color": "yellow"},
+            {"r": 1, "c": 1, "color": "yellow"}
+          ]
+        },
+        {
+          "cells": [
+            {"r": 0, "c": 0, "color": "blue"},
+            {"r": 1, "c": 0, "color": "yellow"}
+          ]
+        }
+      ]
+    },
+    {
       "id": "expert_001",
       "solution": [
         {"color": "red",    "shape": "circle"},
